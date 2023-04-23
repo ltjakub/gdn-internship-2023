@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class NbpService {
+public class ExchangeRateService {
 
     private final RestTemplate restTemplate;
     private final Integer MAX_QUOTATIONS = 255;

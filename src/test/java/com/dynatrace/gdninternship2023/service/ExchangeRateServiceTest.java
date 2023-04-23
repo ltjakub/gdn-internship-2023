@@ -19,9 +19,9 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class NbpServiceTest {
+public class ExchangeRateServiceTest {
 
-    private NbpService nbpService;
+    private ExchangeRateService exchangeRateService;
 
     @Mock
     private RestTemplate restTemplate;
@@ -29,7 +29,7 @@ public class NbpServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        nbpService = new NbpService(restTemplate);
+        exchangeRateService = new ExchangeRateService(restTemplate);
     }
 
     private final LocalDate date = LocalDate.of(2023, 4, 22);
@@ -46,7 +46,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(exchangeRates);
 
         // when
-        Double result = nbpService.getAverageExchangeRate(date, currencyCode);
+        Double result = exchangeRateService.getAverageExchangeRate(date, currencyCode);
 
         // then
         assertEquals(4.0, result);
@@ -73,7 +73,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(exchangeRates);
 
         // when
-        ExtremumDTO result = nbpService.getMinAndMaxAverageValue(currencyCode, quotations);
+        ExtremumDTO result = exchangeRateService.getMinAndMaxAverageValue(currencyCode, quotations);
 
         // then
         assertEquals(1.0, result.getMin());
@@ -100,7 +100,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(exchangeRates);
 
         // when
-        Double result = nbpService.getHighestDifferenceInBuyAskRate(currencyCode, quotations);
+        Double result = exchangeRateService.getHighestDifferenceInBuyAskRate(currencyCode, quotations);
 
         // then
         assertEquals(2.0, result);
@@ -114,7 +114,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(null);
 
         // then
-        assertThrows(QuotationNotFoundException.class, () -> nbpService.getAverageExchangeRate(date, currencyCode));
+        assertThrows(QuotationNotFoundException.class, () -> exchangeRateService.getAverageExchangeRate(date, currencyCode));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(null);
 
         // then
-        assertThrows(QuotationNotFoundException.class, () -> nbpService.getMinAndMaxAverageValue(currencyCode, quotations));
+        assertThrows(QuotationNotFoundException.class, () -> exchangeRateService.getMinAndMaxAverageValue(currencyCode, quotations));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(null);
 
         // then
-        assertThrows(QuotationNotFoundException.class, () -> nbpService.getHighestDifferenceInBuyAskRate(currencyCode, quotations));
+        assertThrows(QuotationNotFoundException.class, () -> exchangeRateService.getHighestDifferenceInBuyAskRate(currencyCode, quotations));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(null);
 
         // then
-        assertThrows(SeriesSizeExceededException.class, () -> nbpService.getHighestDifferenceInBuyAskRate(currencyCode, quotations));
+        assertThrows(SeriesSizeExceededException.class, () -> exchangeRateService.getHighestDifferenceInBuyAskRate(currencyCode, quotations));
     }
 
     @Test
@@ -167,6 +167,6 @@ public class NbpServiceTest {
         when(restTemplate.getForObject(url, ExchangeRates.class)).thenReturn(exchangeRates);
 
         //then
-        assertDoesNotThrow(() -> nbpService.getMinAndMaxAverageValue(currencyCode, quotations));
+        assertDoesNotThrow(() -> exchangeRateService.getMinAndMaxAverageValue(currencyCode, quotations));
     }
 }

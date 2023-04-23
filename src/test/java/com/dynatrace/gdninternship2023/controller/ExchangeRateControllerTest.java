@@ -3,7 +3,7 @@ package com.dynatrace.gdninternship2023.controller;
 import static org.mockito.Mockito.when;
 
 import com.dynatrace.gdninternship2023.model.dto.ExtremumDTO;
-import com.dynatrace.gdninternship2023.service.NbpService;
+import com.dynatrace.gdninternship2023.service.ExchangeRateService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,14 +15,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 
-@WebMvcTest(NbpController.class)
-public class NbpControllerTest {
+@WebMvcTest(ExchangeRateController.class)
+public class ExchangeRateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private NbpService nbpService;
+    private ExchangeRateService exchangeRateService;
 
     @Test
     public void shouldStatusBeOkForGetAverageExchangeRate() throws Exception {
@@ -31,7 +31,7 @@ public class NbpControllerTest {
         LocalDate date = LocalDate.now();
         Double expectedRate = 4.2;
 
-        when(nbpService.getAverageExchangeRate(date, currencyCode)).thenReturn(expectedRate);
+        when(exchangeRateService.getAverageExchangeRate(date, currencyCode)).thenReturn(expectedRate);
 
         // when and then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/nbp/{currencyCode}/{date}", currencyCode, date)
@@ -48,7 +48,7 @@ public class NbpControllerTest {
         extremumDTO.setMin(3.0);
         extremumDTO.setMax(4.0);
 
-        when(nbpService.getMinAndMaxAverageValue(currencyCode, quotations)).thenReturn(extremumDTO);
+        when(exchangeRateService.getMinAndMaxAverageValue(currencyCode, quotations)).thenReturn(extremumDTO);
 
         // when and then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/nbp/{currencyCode}/last/{quotations}/extremum", currencyCode, quotations)
@@ -65,7 +65,7 @@ public class NbpControllerTest {
         Integer quotations = 3;
         Double highestDifference = 2.0;
 
-        when(nbpService.getHighestDifferenceInBuyAskRate(currencyCode, quotations)).thenReturn(highestDifference);
+        when(exchangeRateService.getHighestDifferenceInBuyAskRate(currencyCode, quotations)).thenReturn(highestDifference);
 
         // when and then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/nbp/{currencyCode}/last/{quotations}/difference", currencyCode, quotations)

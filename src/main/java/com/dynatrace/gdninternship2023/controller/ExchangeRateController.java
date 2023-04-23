@@ -1,7 +1,7 @@
 package com.dynatrace.gdninternship2023.controller;
 
 import com.dynatrace.gdninternship2023.model.dto.ExtremumDTO;
-import com.dynatrace.gdninternship2023.service.NbpService;
+import com.dynatrace.gdninternship2023.service.ExchangeRateService;
 import com.dynatrace.gdninternship2023.util.error.ApiError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +21,9 @@ import java.time.LocalDate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/nbp")
-public class NbpController {
+public class ExchangeRateController {
 
-    private final NbpService nbpService;
+    private final ExchangeRateService exchangeRateService;
 
     @Operation(summary = "Get average exchange rate for a given currency code and date")
     @ApiResponses(value = {
@@ -40,7 +39,7 @@ public class NbpController {
                             schema = @Schema(implementation = ApiError.class)))
     })
     @GetMapping("/{currencyCode}/{date}")
-    public Double getAverageExchangeRate(@Parameter(
+    public ResponseEntity<Double> getAverageExchangeRate(@Parameter(
             name = "currencyCode",
             description = "The currency code (e.g. USD, EUR)",
             example = "EUR"
@@ -49,7 +48,8 @@ public class NbpController {
             description = "The date in the format yyyy-mm-dd",
             example = "2022-04-04"
     ) @PathVariable LocalDate date) {
-        return nbpService.getAverageExchangeRate(date, currencyCode);
+        Double averageExchangeRate = exchangeRateService.getAverageExchangeRate(date, currencyCode);
+        return ResponseEntity.ok(averageExchangeRate);
     }
 
     @Operation(
@@ -83,7 +83,7 @@ public class NbpController {
             )
             @PathVariable Integer quotations
     ) {
-        ExtremumDTO extremum = nbpService.getMinAndMaxAverageValue(currencyCode, quotations);
+        ExtremumDTO extremum = exchangeRateService.getMinAndMaxAverageValue(currencyCode, quotations);
         return ResponseEntity.ok(extremum);
     }
 
@@ -118,7 +118,7 @@ public class NbpController {
             )
             @PathVariable Integer quotations
     ) {
-        Double highestDifference = nbpService.getHighestDifferenceInBuyAskRate(currencyCode, quotations);
+        Double highestDifference = exchangeRateService.getHighestDifferenceInBuyAskRate(currencyCode, quotations);
         return ResponseEntity.ok(highestDifference);
     }
 }
