@@ -1,5 +1,4 @@
 # gdn-internship-2023
-Jakub Śliwiński
 This project is my solution for internship recruitment task coded in java. 
 This application that provides a REST API for retrieving currency exchange rates that retrives data from the National Bankf of Poland (NBP) API. 
 ## Installation
