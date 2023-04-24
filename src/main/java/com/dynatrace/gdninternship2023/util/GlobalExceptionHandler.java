@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SeriesSizeExceededException.class)
         public final ResponseEntity<Object> handleSeriesSizeExceededException (Exception e) {
         ApiError apiError = new ApiError(ErrorStatus.BAD_REQUEST, "Maximum size of 255 data series has been exceeded");
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public final ResponseEntity<Object> handleMethodArgumentTypeMismatchException (Exception e) {
+        ApiError apiError = new ApiError(ErrorStatus.BAD_REQUEST, "Wrong date type, the date should be in the format yyyy-mm-dd");
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 

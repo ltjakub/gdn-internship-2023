@@ -28,7 +28,7 @@ public class ExchangeRateController {
     @Operation(summary = "Get average exchange rate for a given currency code and date")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Maximum size of 255 data series has been exceeded",
+            @ApiResponse(responseCode = "400", description = "Incorrect date type. The date should be in the format yyyy-mm-dd ",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ApiError.class))),
             @ApiResponse(responseCode = "404", description = "Quotation not found",
