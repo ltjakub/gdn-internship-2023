@@ -19,7 +19,7 @@ You can run the application by running the main class com.dynatrace.gdninternshi
 ## Using the API
 The API provides the following endpoints:
 ```
-GET /api/nbp/{currencyCode}/date
+GET /api/nbp/{currencyCode}/{date}
 ```
 Returns the exchange rates for the specified date.
 ```
